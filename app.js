@@ -33,9 +33,9 @@ switch (product.type) {
 }
 
 //como no me quedava del todo claro e creado iva por unidad e iva por total
-console.log("Total del producto sin iva: ", total);
-console.log("Iva del producto por unidad: ", ivaProducto);
-console.log("Total del producto con iva: ", ivaTotal);
+console.log("Total del producto sin iva: ", total, "€");
+console.log("Iva del producto por unidad: ", ivaProducto, "€");
+console.log("Total del producto con iva: ", ivaTotal, "€");
 
 /**------------------------------ Nomina ------------------------------*/
 const empleado = {
@@ -86,6 +86,9 @@ console.log("Mensual neto: ", mensualNeto);
 /** ------------------------------ Funcion de producto mas iva ------------------------------
  *   Uso los objetos del primer ejericio
  */
+function getTotal(pProduct) {
+  return pProduct.count > 0 ? pProduct.count * pProduct.price : 0;
+}
 
 function getTotalVat(pProduct) {
   return pProduct.count > 0 ? pProduct.count * getVat(pProduct) : 0;
@@ -94,15 +97,23 @@ function getTotalVat(pProduct) {
 function getVat(pProduct) {
   switch (pProduct.type) {
     case "alimentacion":
-      return pProduct.price + pProduct.price * iva.alimentacion;
+      return  pProduct.price * iva.alimentacion;
     case "libro":
-      return pProduct.price + pProduct.price * iva.libro;
+      return  pProduct.price * iva.libro;
     default:
-      return pProduct.price + pProduct.price * iva.estandar;
+      return  pProduct.price * iva.estandar;
   }
 }
 
-console.log(
-  'Total del producto mas iva "Con funciones": ',
-  getTotalVat(product)
-);
+
+function printProductPrice(product) {
+  const subtotal = getTotal(product);
+  const vat = getTotalVat(product);
+  const total = subtotal + vat;
+
+  console.log("Subtotal:", subtotal + "€");
+  console.log("IVA:", vat + "€");
+  console.log("Total:", total + "€");
+}
+
+printProductPrice(product);
